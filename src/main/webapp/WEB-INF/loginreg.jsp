@@ -12,15 +12,25 @@
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
+    <c:if test="${logoutMessage != null}">
+        <c:out value="${logoutMessage}"></c:out>
+    </c:if>
+    <c:if test="${errorMessage != null}">
+        <c:out value="${errorMessage}"></c:out>
+    </c:if>
+	    
     <h1>Login</h1>
-    <form style="width:300px">
+    <form style="width:300px" action="/login" method="POST">
         <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email class="form-control" id="email" placeholder="Email">
+            <label for="email">Email Address
+            <input type="text" class="form-control" id="email" name="username" placeholder="Email">
+            </label>
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Password">
+            <label for="password">Password
+            <input type="password" class="form-control" id="password" name="password"
+          	placeholder="Password">
+            </label>
         </div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit"  class="btn btn-default">Login</button>

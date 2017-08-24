@@ -72,11 +72,23 @@ public class UserController {
     @RequestMapping("/login")
     public String login(@Valid @ModelAttribute("user") User user, BindingResult result, @RequestParam(value="error", required=false) String error, @RequestParam(value="logout", required=false) String logout, Model model) {
     		if(error != null) {
+    			System.out.println(result.getAllErrors());
             model.addAttribute("errorMessage", "Invalid Credentials, Please try again.");
         }
         if(logout != null) {
             model.addAttribute("logoutMessage", "Logout Successfull!");
         }
+        System.out.println("LOGIN PASSED");
         return "loginreg.jsp";
     }
+    
+    @RequestMapping(value = {"/", "/dashboard"})
+    public String home(Principal principal, Model model) {
+    		System.out.println("WE ARE IN HOMEPAGE!");
+        String email = principal.getName();
+        User currentUser = userService.findByEmail(email);
+        model.addAttribute("currentUser", currentUser);
+        return "dashboard.jsp";
+    }
+    
 }
