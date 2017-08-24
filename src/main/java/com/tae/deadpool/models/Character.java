@@ -33,6 +33,7 @@ public class Character {
 	@ManyToOne
 	private Character murderer;
 	
+	
 	@OneToMany(mappedBy = "murderer", fetch = FetchType.LAZY)
 	private List<Character> victims;
 	

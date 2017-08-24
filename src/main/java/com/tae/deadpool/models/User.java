@@ -61,6 +61,14 @@ public class User {
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="userPicks", fetch = FetchType.LAZY)
 	private List<Pick> userPicks;
 	
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(
+		name = "users_roles",
+		joinColumns = @JoinColumn(name = "user_id"),
+		inverseJoinColumns = @JoinColumn(name = "role_id")
+			)
+	private List<Role> roles;
+	
 	@DateTimeFormat(pattern = "MM/dd/yyy HH:mm:ss")
 	private Date createdAt;
 
@@ -167,6 +175,22 @@ public class User {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public List<Invitation> getInvitedDeadpools() {
+		return invitedDeadpools;
+	}
+
+	public void setInvitedDeadpools(List<Invitation> invitedDeadpools) {
+		this.invitedDeadpools = invitedDeadpools;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
     
     
