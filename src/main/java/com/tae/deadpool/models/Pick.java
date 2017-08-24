@@ -35,16 +35,15 @@ public class Pick {
 	
 	@OneToOne(fetch = FetchType.LAZY)
 //	@Column(name = "victim_id")
-//	@JoinColumn(name="character_id")
+	@JoinColumn(name="victim_id")
 	private Character victim;
-	
-	@Size(min=1, message="Choose your method of death.")
-	private String methodOfDeath;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 //	@Column(name = "killer_id")
-//	@JoinColumn(name="character_id")
+	@JoinColumn(name="killer_id")
 	private Character killer;
+	
+	private Integer score;
 	
 	@DateTimeFormat(pattern = "MM/dd/yyy HH:mm:ss")
 	private Date createdAt;
@@ -98,20 +97,20 @@ public class Pick {
 		this.victim = victim;
 	}
 
-	public String getMethodOfDeath() {
-		return methodOfDeath;
-	}
-
-	public void setMethodOfDeath(String methodOfDeath) {
-		this.methodOfDeath = methodOfDeath;
-	}
-
 	public Character getKiller() {
 		return killer;
 	}
 
 	public void setKiller(Character killer) {
 		this.killer = killer;
+	}
+	
+	public Integer getScore() {
+		return score;
+	}
+
+	public void setScore(Integer score) {
+		this.score = score;
 	}
 
 	public Date getCreatedAt() {
@@ -131,3 +130,7 @@ public class Pick {
 	}
     
 }
+
+//SELECT victims.fname, killers.fname FROM characters AS victims 
+//JOIN picks ON victims.id = picks.victim_id
+//JOIN characters AS killers ON killers.id = picks.killer_id;

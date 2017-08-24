@@ -3,6 +3,7 @@ package com.tae.deadpool.models;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,9 +27,7 @@ public class Character {
 	private String fname;
 	
 	private String lname;
-	
-	private String house;
-	
+		
 	private boolean alive;
 	
 	@ManyToOne
@@ -79,14 +78,6 @@ public class Character {
 
 	public void setLname(String lname) {
 		this.lname = lname;
-	}
-
-	public String getHouse() {
-		return house;
-	}
-
-	public void setHouse(String house) {
-		this.house = house;
 	}
 
 	public boolean isAlive() {
