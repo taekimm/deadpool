@@ -55,8 +55,13 @@ public class User {
 			)
 	private List<Deadpool> activeDeadpools;
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="deadpool", fetch = FetchType.LAZY)
-	private List<Invitation> invitedDeadpools;
+	@ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(
+			name="users_invited_deadpools",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "deadpool_id")
+			)
+	private List<Deadpool> invitedDeadpools;
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="userPicks", fetch = FetchType.LAZY)
 	private List<Pick> userPicks;
@@ -177,11 +182,12 @@ public class User {
 		this.updatedAt = updatedAt;
 	}
 
-	public List<Invitation> getInvitedDeadpools() {
+
+	public List<Deadpool> getInvitedDeadpools() {
 		return invitedDeadpools;
 	}
 
-	public void setInvitedDeadpools(List<Invitation> invitedDeadpools) {
+	public void setInvitedDeadpools(List<Deadpool> invitedDeadpools) {
 		this.invitedDeadpools = invitedDeadpools;
 	}
 

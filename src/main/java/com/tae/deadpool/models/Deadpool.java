@@ -27,6 +27,16 @@ public class Deadpool {
 	@GeneratedValue
 	private Long id;
 	
+	private String name;
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="user_id")
 	private User host;
@@ -38,6 +48,14 @@ public class Deadpool {
 			inverseJoinColumns = @JoinColumn(name = "user_id")
 			)
 	private List<User> usersInDeadpool;
+	
+	@ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "users_invited_deadpools",
+			joinColumns = @JoinColumn(name = "deadpool_id"),
+			inverseJoinColumns = @JoinColumn(name = "user_id")
+			)
+	private List<User> invitedUsersInDeadpool;
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="relatedDeadpool", fetch = FetchType.LAZY)
 	private List<Pick> picksByUsers;
@@ -108,6 +126,14 @@ public class Deadpool {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public List<User> getInvitedUsersInDeadpool() {
+		return invitedUsersInDeadpool;
+	}
+
+	public void setInvitedUsersInDeadpool(List<User> invitedUsersInDeadpool) {
+		this.invitedUsersInDeadpool = invitedUsersInDeadpool;
 	}
     
  }

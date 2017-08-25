@@ -7,5 +7,5 @@ import com.tae.deadpool.models.Deadpool;
 
 @Repository
 public interface DeadpoolRepository extends CrudRepository<Deadpool, Long>{
-
+	Deadpool findById(Long deadpoolId);
 }
