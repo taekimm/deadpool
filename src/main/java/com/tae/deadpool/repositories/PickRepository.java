@@ -1,5 +1,7 @@
 package com.tae.deadpool.repositories;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -19,4 +21,7 @@ public interface PickRepository extends CrudRepository<Pick, Long> {
 	@Modifying
 	@Query("update Pick p set p.score = 10 WHERE p.victim = ?1 AND p.killer = ?2 AND p.id = ?3")
 	int bothPicksRight(Long victimId, Long killerId, Long pickId);
+	
+	@Query("SELECT p FROM Pick p WHERE p.userPicks = ?1 AND p.relatedDeadpool = ?2")
+	List<Object[]> getUsersPicks(Long userId, Long deadpoolId);
 }
