@@ -18,12 +18,13 @@
 					</c:forEach>
 				</select>
 				 Kills 
-				 <select name="VictimId">
+				 <select name="victimId">
 					<c:forEach items="${allCharacters}" var="character">
 						<option value="${character.id}">${character.fname} ${character.lname}</option>
 					</c:forEach>
 				</select>
 				</p>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				<input type="submit" value="Update scores!">
 			</form>
 	</fieldset>

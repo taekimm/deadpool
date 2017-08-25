@@ -11,24 +11,21 @@
 <body>
 	<fieldset>
 		<legend>Add pick</legend>
-		<c:if test="${usersPicksInDeadpool.size() < 11}">
-			<form:form method="POST" action="users/deadpool/${deadpool.id}/addpicks" ModelAttribute="pick">
+			<form:form method="POST" action="/users/deadpool/${deadpool.id}/addpicks" modelAttribute="pick">
 				<p><select name="killerId">
 					<c:forEach items="${allCharacters}" var="character">
 						<option value="${character.id}">${character.fname} ${character.lname}</option>
 					</c:forEach>
 				</select>
 				 Kills 
-				 <select name="VictimId">
+				 <select name="victimId">
 					<c:forEach items="${allCharacters}" var="character">
 						<option value="${character.id}">${character.fname} ${character.lname}</option>
 					</c:forEach>
 				</select>
 				</p>
-				<input type="hidden" value="{currentUser.id}">
-				<input type="submit" value="Update scores!">
+				<input type="submit" value="Make pick!">
 			</form:form>
-		</c:if>
 	</fieldset>
 </body>
 </html>
