@@ -16,18 +16,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.tae.deadpool.models.Character;
 import com.tae.deadpool.models.User;
+import com.tae.deadpool.services.CharacterService;
 import com.tae.deadpool.services.UserService;
 import com.tae.deadpool.validators.UserValidator;
 
 @Controller
 public class UserController {
 	private UserService userService;
+	private CharacterService characterService;
 	
 	private UserValidator userValidator;
 	
-	public UserController(UserService userService, UserValidator userValidator) {
+	public UserController(UserService userService, UserValidator userValidator, CharacterService characterService) {
 		this.userService = userService;
+		this.characterService = characterService;
 		this.userValidator = userValidator;
 	}
     
@@ -52,8 +56,10 @@ public class UserController {
     public String adminPage(Principal principal, Model model) {
     		String email = principal.getName();
     		List<User> allUsers = userService.findAll();
+    		List<Character> allCharacters = characterService.findAll();
     		model.addAttribute("currentUser", userService.findByEmail(email));
     		model.addAttribute("users", allUsers);
+    		model.addAttribute("allCharacters", allCharacters);
     		return "adminPage.jsp";
     }
     
