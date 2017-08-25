@@ -17,8 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tae.deadpool.models.Character;
+import com.tae.deadpool.models.Deadpool;
+import com.tae.deadpool.models.Pick;
 import com.tae.deadpool.models.User;
 import com.tae.deadpool.services.CharacterService;
+import com.tae.deadpool.services.DeadpoolService;
+import com.tae.deadpool.services.PickService;
 import com.tae.deadpool.services.UserService;
 import com.tae.deadpool.validators.UserValidator;
 
@@ -26,12 +30,16 @@ import com.tae.deadpool.validators.UserValidator;
 public class UserController {
 	private UserService userService;
 	private CharacterService characterService;
+	private DeadpoolService deadpoolService;
+	private PickService pickService;
 	
 	private UserValidator userValidator;
 	
-	public UserController(UserService userService, UserValidator userValidator, CharacterService characterService) {
+	public UserController(UserService userService, UserValidator userValidator, CharacterService characterService, DeadpoolService deadpoolService, PickService pickService) {
 		this.userService = userService;
+		this.pickService = pickService;
 		this.characterService = characterService;
+		this.deadpoolService = deadpoolService;
 		this.userValidator = userValidator;
 	}
     
@@ -90,11 +98,27 @@ public class UserController {
     
     @RequestMapping(value = {"/", "/dashboard"})
     public String home(Principal principal, Model model) {
-    		System.out.println("WE ARE IN HOMEPAGE!");
         String email = principal.getName();
         User currentUser = userService.findByEmail(email);
         model.addAttribute("currentUser", currentUser);
         return "dashboard.jsp";
     }
+    
+    @GetMapping("/users/deadpool/{deadpoolId)/addpicks")
+    public String addPicks(Principal principal, Model model, @RequestParam(value="deadpoolId") Long deadpoolId, @ModelAttribute("pick") Pick  pick ) {
+    	String email = principal.getName();
+    	User user = userService.findByEmail(email);
+		List<Character> allCharacters = characterService.findAll();
+		Deadpool currentDeadpool = deadpoolService.findById(deadpoolId);
+		
+		List<Object[]> userPicks = pickService.getUsersPicks(user.getId(), deadpoolId);
+		
+		model.addAttribute("currentUser", user);
+		model.addAttribute("allCharacters", allCharacters);
+		model.addAttribute("deadpool", currentDeadpool);
+		model.addAttribute("usersPicksInDeadpool", userPicks);
+    	return "addpicks.jsp";
+    }
+    
     
 }

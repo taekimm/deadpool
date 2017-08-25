@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.tae.deadpool.models.Deadpool;
+import com.tae.deadpool.models.Pick;
 import com.tae.deadpool.models.User;
+import com.tae.deadpool.repositories.DeadpoolRepository;
 import com.tae.deadpool.repositories.RoleRepository;
 import com.tae.deadpool.repositories.UserRepository;
 
@@ -13,11 +16,13 @@ import com.tae.deadpool.repositories.UserRepository;
 public class UserService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private DeadpoolRepository deadpoolRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder)     {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, DeadpoolRepository deadpoolRepository, BCryptPasswordEncoder bCryptPasswordEncoder)     {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.deadpoolRepository = deadpoolRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
     
@@ -58,4 +63,5 @@ public class UserService {
     		u.setRoles(roleRepository.findByName("ROLE_ADMIN"));
     		userRepository.save(u);
     }
+    
 }
