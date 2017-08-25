@@ -10,14 +10,14 @@
 </head>
 <body>
 	<fieldset>
-		<legend>Add pick</legend>
+		<legend><h2>Add pick</h2></legend>
 			<form:form method="POST" action="/users/deadpool/${deadpool.id}/addpicks" modelAttribute="pick">
 				<p><select name="killerId">
 					<c:forEach items="${allCharacters}" var="character">
 						<option value="${character.id}">${character.fname} ${character.lname}</option>
 					</c:forEach>
 				</select>
-				 Kills 
+				 kills 
 				 <select name="victimId">
 					<c:forEach items="${allCharacters}" var="character">
 						<option value="${character.id}">${character.fname} ${character.lname}</option>
@@ -27,5 +27,6 @@
 				<input type="submit" value="Make pick!">
 			</form:form>
 	</fieldset>
+	<a href="/users/deadpool/${deadpool.id}">Back</a>
 </body>
 </html>

@@ -15,17 +15,18 @@
     </form>
 	<fieldset>
 		<legend><h2>Deadpool: ${deadpool.name }</h2></legend>
-		<c:forEach items="${deadpool.usersInDeadpool}" var="user">
+		<c:forEach items="${ud}" var="ud2">
+		<c:if test="${ud2.getDeadpool().getId() == deadpool.getId()}">
         		<ul class="list-group">
-            		<li class="user"><b>${user.fname} ${user.lname}</b> | Total Score: </li>
+            		<li class="user"><b>${ud2.getUser().fname} ${ud2.getUser().lname}</b> | Total Score: ${ud2.totalScore}</li>
             		<ol>
-            			<c:forEach items="${user.getUserPicks() }" var="pick">
+            			<c:forEach items="${ud2.getUser().getUserPicks() }" var="pick">
             				<li>${pick.getKiller().fname} ${pick.getKiller().lname} kills ${pick.getVictim().fname } ${pick.getVictim().lname } | Score: ${pick.getScore() }</li>
             			</c:forEach>
             		</ol>
         		</ul>
-    		</c:forEach>
-		
+    		</c:if>
+		</c:forEach>
         <c:if test="${ host.getId() == currentUser.getId() }">
             <form method="POST" action="/users/addUser">
                 <select name="invitedUserId">

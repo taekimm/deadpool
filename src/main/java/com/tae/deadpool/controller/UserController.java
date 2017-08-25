@@ -20,10 +20,11 @@ import com.tae.deadpool.models.Character;
 import com.tae.deadpool.models.Deadpool;
 import com.tae.deadpool.models.Pick;
 import com.tae.deadpool.models.User;
-import com.tae.deadpool.repositories.PickRepository;
+import com.tae.deadpool.models.userDeadpool;
 import com.tae.deadpool.services.CharacterService;
 import com.tae.deadpool.services.DeadpoolService;
 import com.tae.deadpool.services.PickService;
+import com.tae.deadpool.services.UserDeadpoolService;
 import com.tae.deadpool.services.UserService;
 import com.tae.deadpool.validators.UserValidator;
 
@@ -33,15 +34,17 @@ public class UserController {
 	private CharacterService characterService;
 	private DeadpoolService deadpoolService;
 	private PickService pickService;
+	private UserDeadpoolService userDeadpoolService;
 	
 	private UserValidator userValidator;
 	
-	public UserController(UserService userService, UserValidator userValidator, CharacterService characterService, DeadpoolService deadpoolService, PickService pickService) {
+	public UserController(UserDeadpoolService userDeadpoolService,UserService userService, UserValidator userValidator, CharacterService characterService, DeadpoolService deadpoolService, PickService pickService) {
 		this.userService = userService;
 		this.pickService = pickService;
 		this.characterService = characterService;
 		this.deadpoolService = deadpoolService;
 		this.userValidator = userValidator;
+		this.userDeadpoolService = userDeadpoolService;
 	}
     
     @PostMapping("/registration")
@@ -129,6 +132,9 @@ public class UserController {
         User host = deadpool.getHost();
         model.addAttribute("host", host);
         model.addAttribute("currentUser", currentUser);
+        
+        model.addAttribute("ud", userDeadpoolService.findAll());
+        
         
         return "showPool.jsp";
     }
