@@ -114,17 +114,23 @@ public class UserController {
     }
     
     @RequestMapping("/users/deadpool/{index}")
-    	public String showPool(@PathVariable("index") Long deadpoolId, Model model, Principal principal) {
-    		List<User> allUsers = userService.findAll();
-    		Deadpool deadpool = deadpoolService.getDeadpoolById(deadpoolId);
-    		model.addAttribute("deadpool", deadpool);
-    		List<User> allUsersInvitedPool = deadpool.getInvitedUsersInDeadpool();
-    		List<User> allUsersInPool = deadpool.getUsersInDeadpool();
-    		allUsers.removeAll(allUsersInPool);
-    		allUsers.removeAll(allUsersInvitedPool);
-    		model.addAttribute("allUsers", allUsers);
-    		
-    		return "showPool.jsp";
+    public String showPool(@PathVariable("index") Long deadpoolId, Model model, Principal principal) {
+    String email = principal.getName();
+    User currentUser = userService.findByEmail(email);
+        List<User> allUsers = userService.findAll();
+        Deadpool deadpool = deadpoolService.getDeadpoolById(deadpoolId);
+        model.addAttribute("deadpool", deadpool);
+        List<User> allUsersInvitedPool = deadpool.getInvitedUsersInDeadpool();
+        List<User> allUsersInPool = deadpool.getUsersInDeadpool();
+        allUsers.removeAll(allUsersInPool);
+        allUsers.removeAll(allUsersInvitedPool);
+        model.addAttribute("allUsers", allUsers);
+        model.addAttribute("allUsersInPool", allUsersInPool);
+        User host = deadpool.getHost();
+        model.addAttribute("host", host);
+        model.addAttribute("currentUser", currentUser);
+        
+        return "showPool.jsp";
     }
     
     @RequestMapping("/users/deadpool/{deadpoolId}/accept")
@@ -176,6 +182,7 @@ public class UserController {
 		
     	return "addPicks.jsp";
     }
+    
     @PostMapping("/users/deadpool/{deadpoolId}/addpicks")
     public String createPicks (@Valid @ModelAttribute("pick") Pick pick, BindingResult result,  @PathVariable("deadpoolId") Long deadpoolId, @RequestParam(value="killerId") Long killerId, @RequestParam(value="victimId")Long victimId, Principal principal) {
     	String email = principal.getName();

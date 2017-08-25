@@ -24,9 +24,11 @@
 	
 	<fieldset>
 		<legend>Your active deadpools</legend>
+			<ul>
 			<c:forEach items="${currentUser.getActiveDeadpools() }" var="deadpool">
-				<a href="/users/deadpool/${deadpool.id}">${deadpool.name}</a>
+				<li><a href="/users/deadpool/${deadpool.id}">${deadpool.name}</a></li>
 			</c:forEach>
+			</ul>
 	</fieldset>
 </body>
 </html>

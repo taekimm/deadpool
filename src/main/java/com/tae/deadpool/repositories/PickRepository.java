@@ -15,11 +15,11 @@ import com.tae.deadpool.models.Pick;
 public interface PickRepository extends CrudRepository<Pick, Long> {
 	 
 	@Modifying
-	@Query("update Pick p set p.score = 5 WHERE p.victim = ?1 AND p.id = ?2")
+	@Query("update Pick p set p.score = 5 WHERE p.victim.id = ?1 AND p.id = ?2")
 	int onePickRight(Long victimId, Long pickId);
 	
 	@Modifying
-	@Query("update Pick p set p.score = 10 WHERE p.victim = ?1 AND p.killer = ?2 AND p.id = ?3")
+	@Query("update Pick p set p.score = 10 WHERE p.victim.id = ?1 AND p.killer.id = ?2 AND p.id = ?3")
 	int bothPicksRight(Long victimId, Long killerId, Long pickId);
 	
 	@Query("SELECT p FROM Pick p WHERE p.userPicks = ?1 AND p.relatedDeadpool = ?2")

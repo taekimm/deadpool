@@ -17,22 +17,32 @@
 		<legend><h2>Deadpool: ${deadpool.name }</h2></legend>
 		<c:forEach items="${deadpool.usersInDeadpool}" var="user">
         		<ul class="list-group">
-            		<li class="user">${user.fname} ${user.lname}</li>
+            		<li class="user"><b>${user.fname} ${user.lname}</b> | Total Score: </li>
+            		<ol>
+            			<c:forEach items="${user.getUserPicks() }" var="pick">
+            				<li>${pick.getKiller().fname} ${pick.getKiller().lname} kills ${pick.getVictim().fname } ${pick.getVictim().lname } | Score: ${pick.getScore() }</li>
+            			</c:forEach>
+            		</ol>
         		</ul>
     		</c:forEach>
 		
-		<form method="POST" action="/users/addUser">
-			<select name="invitedUserId">
-				<c:forEach items="${allUsers }" var="user">
-                    	<option name="invitedUserId" value="${user.getId() }">${user.fname} ${user.lname}</option>
-                </c:forEach>
-			</select>
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-			<input type="hidden" value="${deadpool.getId() }" name="deadpoolId">
-			<input type="submit" value="Invite User">
-		</form>
+        <c:if test="${ host.getId() == currentUser.getId() }">
+            <form method="POST" action="/users/addUser">
+                <select name="invitedUserId">
+                    <c:forEach items="${allUsers }" var="user">
+                            <option name="invitedUserId" value="${user.getId() }">${user.fname} ${user.lname}</option>
+                    </c:forEach>
+                </select>
+                <input type="hidden" name="xq${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input type="hidden" value="${deadpool.getId() }" name="deadpoolId">
+                <input type="submit" value="Invite User">
+            </form>
+        </c:if>  
 	</fieldset>
-	
-	<a href="/users/deadpool/${deadpool.id}/addpicks">Add picks</a>
+	 <c:forEach items="${allUsersInPool }" var="user">
+        <c:if test="${user == currentUser }">
+            <a href="/users/deadpool/${deadpool.id}/addpicks">Add picks</a>
+        </c:if>
+    </c:forEach>
 </body>
 </html>
