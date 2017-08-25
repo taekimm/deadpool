@@ -15,24 +15,35 @@
     </form>
 	<fieldset>
 		<legend><h2>Deadpool: ${deadpool.name }</h2></legend>
-		<c:forEach items="${deadpool.usersInDeadpool}" var="user">
+		<c:forEach items="${ud}" var="ud2">
+		<c:if test="${ud2.getDeadpool().getId() == deadpool.getId()}">
         		<ul class="list-group">
-            		<li class="user">${user.fname} ${user.lname}</li>
+            		<li class="user"><b>${ud2.getUser().fname} ${ud2.getUser().lname}</b> | Total Score: ${ud2.totalScore}</li>
+            		<ol>
+            			<c:forEach items="${ud2.getUser().getUserPicks() }" var="pick">
+            				<li>${pick.getKiller().fname} ${pick.getKiller().lname} kills ${pick.getVictim().fname } ${pick.getVictim().lname } | Score: ${pick.getScore() }</li>
+            			</c:forEach>
+            		</ol>
         		</ul>
-    		</c:forEach>
-		
-		<form method="POST" action="/users/addUser">
-			<select name="invitedUserId">
-				<c:forEach items="${allUsers }" var="user">
-                    	<option name="invitedUserId" value="${user.getId() }">${user.fname} ${user.lname}</option>
-                </c:forEach>
-			</select>
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-			<input type="hidden" value="${deadpool.getId() }" name="deadpoolId">
-			<input type="submit" value="Invite User">
-		</form>
+    		</c:if>
+		</c:forEach>
+        <c:if test="${ host.getId() == currentUser.getId() }">
+            <form method="POST" action="/users/addUser">
+                <select name="invitedUserId">
+                    <c:forEach items="${allUsers }" var="user">
+                            <option name="invitedUserId" value="${user.getId() }">${user.fname} ${user.lname}</option>
+                    </c:forEach>
+                </select>
+                <input type="hidden" name="xq${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input type="hidden" value="${deadpool.getId() }" name="deadpoolId">
+                <input type="submit" value="Invite User">
+            </form>
+        </c:if>  
 	</fieldset>
-	
-	<a href="/users/deadpool/${deadpool.id}/addpicks">Add picks</a>
+	 <c:forEach items="${allUsersInPool }" var="user">
+        <c:if test="${user == currentUser }">
+            <a href="/users/deadpool/${deadpool.id}/addpicks">Add picks</a>
+        </c:if>
+    </c:forEach>
 </body>
 </html>

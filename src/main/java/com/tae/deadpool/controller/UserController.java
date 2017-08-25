@@ -20,10 +20,11 @@ import com.tae.deadpool.models.Character;
 import com.tae.deadpool.models.Deadpool;
 import com.tae.deadpool.models.Pick;
 import com.tae.deadpool.models.User;
-import com.tae.deadpool.repositories.PickRepository;
+import com.tae.deadpool.models.userDeadpool;
 import com.tae.deadpool.services.CharacterService;
 import com.tae.deadpool.services.DeadpoolService;
 import com.tae.deadpool.services.PickService;
+import com.tae.deadpool.services.UserDeadpoolService;
 import com.tae.deadpool.services.UserService;
 import com.tae.deadpool.validators.UserValidator;
 
@@ -33,15 +34,17 @@ public class UserController {
 	private CharacterService characterService;
 	private DeadpoolService deadpoolService;
 	private PickService pickService;
+	private UserDeadpoolService userDeadpoolService;
 	
 	private UserValidator userValidator;
 	
-	public UserController(UserService userService, UserValidator userValidator, CharacterService characterService, DeadpoolService deadpoolService, PickService pickService) {
+	public UserController(UserDeadpoolService userDeadpoolService,UserService userService, UserValidator userValidator, CharacterService characterService, DeadpoolService deadpoolService, PickService pickService) {
 		this.userService = userService;
 		this.pickService = pickService;
 		this.characterService = characterService;
 		this.deadpoolService = deadpoolService;
 		this.userValidator = userValidator;
+		this.userDeadpoolService = userDeadpoolService;
 	}
     
     @PostMapping("/registration")
@@ -114,17 +117,26 @@ public class UserController {
     }
     
     @RequestMapping("/users/deadpool/{index}")
-    	public String showPool(@PathVariable("index") Long deadpoolId, Model model, Principal principal) {
-    		List<User> allUsers = userService.findAll();
-    		Deadpool deadpool = deadpoolService.getDeadpoolById(deadpoolId);
-    		model.addAttribute("deadpool", deadpool);
-    		List<User> allUsersInvitedPool = deadpool.getInvitedUsersInDeadpool();
-    		List<User> allUsersInPool = deadpool.getUsersInDeadpool();
-    		allUsers.removeAll(allUsersInPool);
-    		allUsers.removeAll(allUsersInvitedPool);
-    		model.addAttribute("allUsers", allUsers);
-    		
-    		return "showPool.jsp";
+    public String showPool(@PathVariable("index") Long deadpoolId, Model model, Principal principal) {
+    String email = principal.getName();
+    User currentUser = userService.findByEmail(email);
+        List<User> allUsers = userService.findAll();
+        Deadpool deadpool = deadpoolService.getDeadpoolById(deadpoolId);
+        model.addAttribute("deadpool", deadpool);
+        List<User> allUsersInvitedPool = deadpool.getInvitedUsersInDeadpool();
+        List<User> allUsersInPool = deadpool.getUsersInDeadpool();
+        allUsers.removeAll(allUsersInPool);
+        allUsers.removeAll(allUsersInvitedPool);
+        model.addAttribute("allUsers", allUsers);
+        model.addAttribute("allUsersInPool", allUsersInPool);
+        User host = deadpool.getHost();
+        model.addAttribute("host", host);
+        model.addAttribute("currentUser", currentUser);
+        
+        model.addAttribute("ud", userDeadpoolService.findAll());
+        
+        
+        return "showPool.jsp";
     }
     
     @RequestMapping("/users/deadpool/{deadpoolId}/accept")
@@ -176,6 +188,7 @@ public class UserController {
 		
     	return "addPicks.jsp";
     }
+    
     @PostMapping("/users/deadpool/{deadpoolId}/addpicks")
     public String createPicks (@Valid @ModelAttribute("pick") Pick pick, BindingResult result,  @PathVariable("deadpoolId") Long deadpoolId, @RequestParam(value="killerId") Long killerId, @RequestParam(value="victimId")Long victimId, Principal principal) {
     	String email = principal.getName();

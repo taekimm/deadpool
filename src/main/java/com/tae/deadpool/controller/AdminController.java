@@ -25,6 +25,7 @@ public class AdminController {
 	
 	@Autowired
 	CharacterService characterService;
+	@Autowired
 	PickService pickService;
 	
 	@GetMapping("/admin/characters/new")
