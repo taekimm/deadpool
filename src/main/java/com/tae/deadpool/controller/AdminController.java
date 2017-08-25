@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tae.deadpool.models.Character;
 import com.tae.deadpool.services.CharacterService;
+import com.tae.deadpool.services.PickService;
 
 
 @Controller
@@ -22,6 +25,7 @@ public class AdminController {
 	
 	@Autowired
 	CharacterService characterService;
+	PickService pickService;
 	
 	@GetMapping("/admin/characters/new")
 	public String newCharacter(@ModelAttribute("char") Character character) {
@@ -54,6 +58,24 @@ public class AdminController {
         model.addAttribute("character", newChar);
         return "characterDetail.jsp";
     }
+   
+   @PostMapping("/admin/characters/{characterId}/edit")
+   public String editCharacter(@Valid @ModelAttribute("character") Character character, BindingResult result, RedirectAttributes redirectAttributes, Model model, @PathVariable("characterId") Long characterId) {
+       if(result.hasErrors()) {
+    	   return "redirect:/admin/characters/{characterId}/edit";
+       } else {
+    	   characterService.updateCharacter(character, characterId);
+    	   return "redirect:/admin/characters/{characterId}/edit";
+    	   
+       }
+	   
+   }
+   
+   @PostMapping("/admin/updateScores")
+   public String updateScores(@RequestParam(value="killerId") Long killerId, @RequestParam(value="victimId") Long victimId) {
+	   pickService.updateScores(victimId, killerId);
+	   return "redirect:/admin";
+   }
 
 	
 }

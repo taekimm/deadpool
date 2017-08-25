@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import com.tae.deadpool.models.Character;
 
-@Transactional
 @Repository
+@Transactional
 public interface CharacterRepository extends PagingAndSortingRepository<Character, Long> {
     
     @Modifying

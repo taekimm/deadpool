@@ -25,11 +25,13 @@
             <tr>
                 <td><c:out value="${character.fname}"></c:out></td>
                 <td><c:out value="${character.lname}"></c:out></td>
-                <td><a href="/admin/character/${character.id}/edit">Edit</a></td>
+                <td><a href="/admin/characters/${character.id}/edit">Edit</a></td>
             </tr>
             </c:forEach>
         </tbody>
     </table>
+    
+    <a href="/admin">Go back to main page</a>
     
 </body>
 </html>

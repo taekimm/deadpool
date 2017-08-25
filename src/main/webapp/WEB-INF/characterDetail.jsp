@@ -11,7 +11,7 @@
 <body>
     <fieldset>
         <legend>Edit an character</legend>
-        <form:form method="POST" action="/admin/character/${character.id}/edit" modelAttribute="character">
+        <form:form method="POST" action="/admin/characters/${character.id}/edit" modelAttribute="character">
         
             <p>
                 <form:label path="fname">First Name:</form:label>
@@ -34,5 +34,8 @@
             <input type="submit" value="Edit">
         </form:form>
     </fieldset>
+    
+    
+    <a href="/admin">Go back to main page</a>
 </body>
 </html>
